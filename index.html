@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Toonas Ltd — Katelaskuri</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F5F2ED;
+  --surface: #FFFFFF;
+  --border: rgba(0,0,0,0.1);
+  --border-strong: rgba(0,0,0,0.18);
+  --text: #1a1a18;
+  --text-muted: #6b6b65;
+  --text-hint: #9b9b94;
+  --teal: #0F6E56;
+  --teal-bg: #E1F5EE;
+  --teal-text: #085041;
+  --amber: #854F0B;
+  --amber-bg: #FAEEDA;
+  --green: #3B6D11;
+  --green-bg: #EAF3DE;
+  --red: #A32D2D;
+  --red-bg: #FCEBEB;
+  --gray-bg: #F1EFE8;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.5;
+  min-height: 100vh;
+  padding: 2rem 1rem 4rem;
+}
+.page {
+  max-width: 960px;
+  margin: 0 auto;
+}
+header {
+  margin-bottom: 2rem;
+}
+header h1 {
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -.02em;
+}
+header p {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+.top-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+@media(max-width:640px){ .top-grid{ grid-template-columns:1fr; } }
+.card {
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem;
+}
+.card-title {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+.field-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.field-row label {
+  flex: 1;
+  font-size: 13px;
+  color: var(--text);
+}
+.field-row input {
+  width: 96px;
+  text-align: right;
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  border: 0.5px solid var(--border-strong);
+  border-radius: 6px;
+  padding: 5px 8px;
+  background: var(--bg);
+  color: var(--text);
+  outline: none;
+  transition: border-color .15s;
+}
+.field-row input:focus { border-color: var(--teal); background: #fff; }
+.field-row .unit { font-size: 12px; color: var(--text-hint); width: 14px; }
+hr.div { border: none; border-top: 0.5px solid var(--border); margin: 12px 0; }
+.prov-tbl { width: 100%; border-collapse: collapse; font-size: 12px; }
+.prov-tbl td { padding: 3px 0; color: var(--text-muted); }
+.prov-tbl td:last-child { text-align: right; }
+.prov-tbl input {
+  width: 52px;
+  text-align: right;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  border: 0.5px solid var(--border-strong);
+  border-radius: 5px;
+  padding: 3px 6px;
+  background: var(--bg);
+  color: var(--text);
+  outline: none;
+}
+.prov-tbl input:focus { border-color: var(--teal); background: #fff; }
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 16px;
+}
+@media(max-width:500px){ .metrics{ grid-template-columns:repeat(2,1fr); } }
+.metric {
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: 10px;
+  padding: 14px;
+}
+.metric-label { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; }
+.metric-value { font-size: 20px; font-weight: 500; font-family: 'DM Mono', monospace; }
+.metric-value.pos { color: var(--teal); }
+.metric-value.neg { color: var(--red); }
+.scroll { overflow-x: auto; margin-bottom: 16px; }
+table.main {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+  min-width: 680px;
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+table.main thead tr { border-bottom: 0.5px solid var(--border-strong); background: var(--gray-bg); }
+table.main thead th {
+  padding: 8px 10px;
+  text-align: right;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  white-space: nowrap;
+}
+table.main thead th:first-child { text-align: left; }
+table.main tbody tr { border-bottom: 0.5px solid var(--border); }
+table.main tbody tr:last-child { border-bottom: none; font-weight: 500; background: var(--gray-bg); }
+table.main td {
+  padding: 8px 10px;
+  text-align: right;
+  white-space: nowrap;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+}
+table.main td:first-child {
+  text-align: left;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+}
+.sub { font-size: 10px; color: var(--text-hint); font-weight: 400; display: block; margin-top: 1px; }
+.pos { color: var(--teal); }
+.neg { color: var(--red); }
+.badge {
+  display: inline-block;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 5px;
+  font-weight: 400;
+  font-family: 'DM Sans', sans-serif;
+  vertical-align: middle;
+}
+.badge-info { background: var(--teal-bg); color: var(--teal-text); }
+.badge-low { background: var(--gray-bg); color: var(--text-muted); }
+.badge-mid { background: var(--amber-bg); color: var(--amber); }
+.badge-high { background: var(--green-bg); color: var(--green); }
+table.kulu {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+table.kulu tr { border-bottom: 0.5px solid var(--border); }
+table.kulu tr:last-child { border-bottom: none; font-weight: 500; }
+table.kulu td { padding: 9px 10px; }
+table.kulu td:last-child {
+  text-align: right;
+  font-family: 'DM Mono', monospace;
+  font-size: 12.5px;
+  white-space: nowrap;
+}
+.teemu-row td { color: var(--teal); font-style: italic; }
+.kulu-input {
+  width: 100px;
+  text-align: right;
+  font-family: 'DM Mono', monospace;
+  font-size: 12.5px;
+  border: 0.5px solid var(--border-strong);
+  border-radius: 6px;
+  padding: 4px 8px;
+  background: var(--bg);
+  color: var(--text);
+  outline: none;
+  transition: border-color .15s;
+}
+.kulu-input:focus { border-color: var(--teal); background: #fff; }
+footer {
+  text-align: center;
+  margin-top: 3rem;
+  font-size: 11px;
+  color: var(--text-hint);
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <h1>Toonas Ltd</h1>
+    <p>Katelaskuri — kuukausittainen</p>
+  </header>
+
+  <div class="top-grid">
+    <div class="card">
+      <p class="card-title">Myynti (kokonaismyynti toimeksiantajalle)</p>
+      <div class="field-row"><label>Marko</label><input type="number" id="s_marko" value="15000" step="100" oninput="calc()"><span class="unit">€</span></div>
+
+      <div class="field-row"><label>Mari</label><input type="number" id="s_mari" value="6000" step="100" oninput="calc()"><span class="unit">€</span></div>
+      <div class="field-row"><label>Kati</label><input type="number" id="s_kati" value="5000" step="100" oninput="calc()"><span class="unit">€</span></div>
+      <div class="field-row"><label>Teemu (yrittäjä)</label><input type="number" id="s_teemu" value="10000" step="100" oninput="calc()"><span class="unit">€</span></div>
+      <hr class="div">
+      <p class="card-title">Pohjapalkat</p>
+
+      <div class="field-row"><label>Mari</label><input type="number" id="p_mari" value="1000" step="50" oninput="calc()"><span class="unit">€</span></div>
+      <div class="field-row"><label>Kati</label><input type="number" id="p_kati" value="1000" step="50" oninput="calc()"><span class="unit">€</span></div>
+    </div>
+    <div class="card">
+      <p class="card-title">Asetukset</p>
+      <div class="field-row"><label>Firman osuus myynnistä</label><input type="number" id="a_osuus" value="65" step="0.5" oninput="calc()"><span class="unit">%</span></div>
+      <div class="field-row"><label>Teemun provisio (jää firmaan)</label><input type="number" id="a_teemu_prov" value="70" step="0.5" oninput="calc()"><span class="unit">%</span></div>
+      <hr class="div">
+      <p class="card-title">Markon provisio</p>
+      <div class="field-row"><label>Omasta myynnistä</label><input type="number" id="a_marko_oma" value="30" step="0.5" oninput="calc()"><span class="unit">%</span></div>
+      <div class="field-row"><label>Marin & Katin myynnistä</label><input type="number" id="a_marko_tiimi" value="12.5" step="0.5" oninput="calc()"><span class="unit">%</span></div>
+      <hr class="div">
+      <p class="card-title">Myyjien provisiotaulukko</p>
+      <table class="prov-tbl">
+        <tr><td>Alle 7 500 €</td><td><input type="number" id="p_low" value="9" step="0.5" oninput="calc()"> %</td></tr>
+        <tr><td>7 500 – 15 000 €</td><td><input type="number" id="p_mid" value="12" step="0.5" oninput="calc()"> %</td></tr>
+        <tr><td>Yli 15 000 €</td><td><input type="number" id="p_high" value="16" step="0.5" oninput="calc()"> %</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="metrics" id="metrics"></div>
+
+  <div class="scroll">
+    <table class="main">
+      <thead>
+        <tr>
+          <th style="text-align:left">Henkilö</th>
+          <th>Myynti</th>
+          <th>Tulo firmaan</th>
+          <th>Palkka / alihankinta</th>
+          <th>Kiinteät kulut</th>
+          <th>Kate firmalle</th>
+          <th>Kate-%</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <p class="card-title">Kuluera</p>
+    <table class="kulu"><tbody id="kuluera-body">
+      <tr><td>Tulot toimeksiantajalta</td><td id="kulu-tulot">—</td></tr>
+      <tr><td>Alihankintakulut (laskutus yhteensä)</td><td id="kulu-ali">—</td></tr>
+      <tr class="teemu-row"><td id="kulu-teemu-label">Teemun provisio (jää firmaan)</td><td id="kulu-teemu">—</td></tr>
+      <tr><td>Kiinteät kulut</td><td><input class="kulu-input" type="number" id="a_kiinteat" value="3000" step="100" oninput="calc()"> €</td></tr>
+      <tr><td>Teemun palkka</td><td><input class="kulu-input" type="number" id="a_teemu_palkka" value="3500" step="100" oninput="calc()"> €</td></tr>
+      <tr><td>Kulut yhteensä</td><td id="kulu-yht">—</td></tr>
+      <tr><td style="color:var(--teal)">Käyttökate</td><td id="kulu-kate">—</td></tr>
+    </tbody></table>
+  </div>
+
+  <footer>Toonas Ltd · Katelaskuri</footer>
+</div>
+
+<script>
+function g(id){ return parseFloat(document.getElementById(id).value)||0 }
+function fmt(n){ return Math.round(n).toLocaleString('fi-FI')+' €' }
+function fmtPct(n){ return n.toFixed(1)+' %' }
+function provRate(m){
+  if(m<7500) return {rate:g('p_low'),tier:'low'}
+  if(m<=15000) return {rate:g('p_mid'),tier:'mid'}
+  return {rate:g('p_high'),tier:'high'}
+}
+function badge(tier,rate){
+  return `<span class="badge badge-${tier}">${rate}%</span>`
+}
+function kateCell(k,tulo){
+  const pct=tulo>0?k/tulo*100:0
+  const cls=k>=0?'pos':'neg'
+  return `<td class="${cls}">${fmt(k)}</td><td class="${cls}">${fmtPct(pct)}</td>`
+}
+function calc(){
+  const sM=g('s_marko'),sMr=g('s_mari'),sK=g('s_kati'),sT=g('s_teemu')
+  const total=sM+sMr+sK+sT
+  const osuus=g('a_osuus')/100
+  const tProv=g('a_teemu_prov')/100
+  const kiin=g('a_kiinteat')
+  const pMr=g('p_mari'),pK=g('p_kati')
+  const mOma=g('a_marko_oma')/100
+  const mTiimi=g('a_marko_tiimi')/100
+  const tiimi=sMr+sK
+
+  const mr=provRate(sMr),ka=provRate(sK)
+  const mPalkka=sM*mOma+tiimi*mTiimi
+  const mrPalkka=sMr*(mr.rate/100)+pMr
+  const kPalkka=sK*(ka.rate/100)+pK
+  const totPalkka=mPalkka+mrPalkka+kPalkka
+  const tFirmaan=sT*tProv
+  const perHlo=kiin/4
+
+  const mT=sM*osuus, mrT=sMr*osuus, kT=sK*osuus, tT=sT*tProv
+  const totTulo=mT+mrT+kT+tT
+  const mK=mT-mPalkka-perHlo, mrK=mrT-mrPalkka-perHlo, kK=kT-kPalkka-perHlo, tK=tT-perHlo
+  const totK=mK+mrK+kK+tK
+  const totKpct=totTulo>0?totK/totTulo*100:0
+
+  let tb=''
+  tb+=`<tr><td>Marko<span class="sub">${g('a_marko_oma')}% oma + ${g('a_marko_tiimi')}% tiimi</span></td><td>${fmt(sM)}</td><td>${fmt(mT)}</td><td>${fmt(mPalkka)}</td><td>${fmt(perHlo)}</td>${kateCell(mK,mT)}</tr>`
+  tb+=`<tr><td>Mari ${badge(mr.tier,mr.rate)}</td><td>${fmt(sMr)}</td><td>${fmt(mrT)}</td><td>${fmt(mrPalkka)}</td><td>${fmt(perHlo)}</td>${kateCell(mrK,mrT)}</tr>`
+  tb+=`<tr><td>Kati ${badge(ka.tier,ka.rate)}</td><td>${fmt(sK)}</td><td>${fmt(kT)}</td><td>${fmt(kPalkka)}</td><td>${fmt(perHlo)}</td>${kateCell(kK,kT)}</tr>`
+  tb+=`<tr><td>Teemu <span class="badge badge-info">yrittäjä</span></td><td>${fmt(sT)}</td><td>${fmt(tT)}</td><td>—</td><td>${fmt(perHlo)}</td>${kateCell(tK,tT)}</tr>`
+  tb+=`<tr><td>Yhteensä</td><td>${fmt(total)}</td><td>${fmt(totTulo)}</td><td>${fmt(totPalkka)}</td><td>${fmt(kiin)}</td><td class="${totK>=0?'pos':'neg'}">${fmt(totK)}</td><td class="${totK>=0?'pos':'neg'}">${fmtPct(totKpct)}</td></tr>`
+  document.getElementById('tbody').innerHTML=tb
+
+  document.getElementById('metrics').innerHTML=`
+    <div class="metric"><div class="metric-label">Kokonaismyynti</div><div class="metric-value">${fmt(total)}</div></div>
+    <div class="metric"><div class="metric-label">Firman tulot</div><div class="metric-value">${fmt(totTulo)}</div></div>
+    <div class="metric"><div class="metric-label">Käyttökate</div><div class="metric-value ${totK>=0?'pos':'neg'}">${totK>=0?'+':''}${fmt(totK)}</div></div>
+    <div class="metric"><div class="metric-label">Kateprosentti</div><div class="metric-value ${totKpct>=0?'pos':'neg'}">${fmtPct(totKpct)}</div></div>
+  `
+
+  const kulYht=totPalkka+kiin+g('a_teemu_palkka')
+  const kate2=totTulo-kulYht
+  document.getElementById('kulu-tulot').textContent=fmt(totTulo-tFirmaan)+' ('+Math.round(g('a_osuus'))+'% myynnistä)'
+  document.getElementById('kulu-ali').textContent=fmt(totPalkka)
+  document.getElementById('kulu-teemu-label').textContent='Teemun provisio (jää firmaan) +'+fmt(tFirmaan)
+  document.getElementById('kulu-teemu').textContent=fmt(tFirmaan)
+  document.getElementById('kulu-yht').textContent=fmt(kulYht)
+  const kateEl=document.getElementById('kulu-kate')
+  kateEl.textContent=(kate2>=0?'+':'')+fmt(kate2)
+  kateEl.className=kate2>=0?'pos':'neg'
+}
+calc()
+</script>
+</body>
+</html>
